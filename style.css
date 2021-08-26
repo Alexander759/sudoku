@@ -1,0 +1,42 @@
+﻿body
+{
+
+}
+
+table {
+    width: 36vw;
+    height: 36vw;
+
+}
+
+td {
+    border: 1px solid black;
+    font-size: 40px;
+    width: 4vw;
+    height: 4vw;
+    max-height: 4vw;
+    max-width: 4vw;
+    margin: 0px;
+    text-align: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto
+}
+
+.marked-cell {
+    background: rgba(43, 83, 183, 0.38);
+}
+
+.column-and-row-marked-cell {
+    background: rgba(14, 193, 255, 0.44);
+}
+
+.btn-nums {
+    background: white;
+    color: black;
+    display: flex;
+    font-size: 20px;
+    margin: 10px;
+}
