@@ -55,7 +55,7 @@ btnNums.forEach(function (btn) {
     })
 })
 
-function generateSudoku() {
+/*function generateSudoku() {
     let sudoku = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -127,36 +127,47 @@ function generateSudoku() {
     }
 
     return sudoku
-}
+}*/
 
-let solves = []
+function sudokuSolver(sudoku, maxLength = 1000) {
+    let solves = []
+    function solveSudoku(sudoku) {
 
-function solveSudoku(sudoku) {
+        if (solves.length >= maxLength) {
+            return
+        }
 
-    const indexes = findFirstFreeSpace(sudoku)
+        const indexes = findFirstFreeSpace(sudoku)
 
-    if (!indexes) {
-        solves.push(JSON.parse(JSON.stringify(sudoku)))
-        return
-    }
+        if (!indexes) {
+            solves.push(JSON.parse(JSON.stringify(sudoku)))
+            return
+        }
 
-    let possibleNums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    let notUsefulNums = findNumsThatCantBeUsed(sudoku, indexes[0], indexes[1])
-    //console.log(notUsefulNums)
+        let possibleNums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        let notUsefulNums = findNumsThatCantBeUsed(sudoku, indexes[0], indexes[1])
+        //console.log(notUsefulNums)
 
-    for (let i = 0; i < possibleNums.length; i++) {
-        if (notUsefulNums.includes(possibleNums[i])) {
-            possibleNums.splice(i, 1)
-            i--
+        for (let i = 0; i < possibleNums.length; i++) {
+            if (notUsefulNums.includes(possibleNums[i])) {
+                possibleNums.splice(i, 1)
+                i--
+            }
+        }
+        //console.log(possibleNums.length)
+        while(0 < possibleNums.length) {
+            let newSudoku = sudoku.slice()
+            let randomIndex = Math.floor(Math.random() * possibleNums.length)
+            newSudoku[indexes[0]][indexes[1]] = possibleNums[randomIndex]
+
+            let copy = newSudoku.slice()
+            possibleNums.splice(randomIndex, 1)
+            solveSudoku(JSON.parse(JSON.stringify(copy)))
         }
     }
 
-    for (let i = 0; i < possibleNums.length; i++) {
-        let newSudoku = sudoku.slice()
-        newSudoku[indexes[0]][indexes[1]] = possibleNums[i]
-        let copy = newSudoku.slice()
-        solveSudoku(JSON.parse(JSON.stringify(copy)))
-    }
+    solveSudoku(sudoku)
+    return solves
 }
 
 function findFirstFreeSpace(sudoku) {
@@ -218,28 +229,147 @@ function findNumsThatCantBeUsed(sudoku, indexOne, indexTwo) {
     return nums
 }
 
-let sud = [
-    [0, 0, 0, 0, 0, 0, 4, 0, 0],
-    [7, 0, 0, 2, 0, 3, 0, 0, 0],
-    [0, 0, 0, 0, 9, 1, 6, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 0, 0],
-    [0, 1, 6, 4, 3, 0, 0, 0, 0],
-    [9, 0, 0, 5, 0, 0, 0, 0, 2],
-    [5, 0, 0, 0, 0, 0, 0, 0, 1],
-    [0, 7, 0, 0, 5, 0, 3, 0, 9],
-    [0, 0, 9, 0, 7, 0, 0, 0, 0]
-]
+function generateSudokuPuzzle() {
+    let arr = null
+    do {
+        let emptySudoku = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
 
-/*console.log(solveSudoku(sud.slice()))
+        arr = sudokuSolver(emptySudoku, 1000)[Math.floor(Math.random() * 1000)]
 
-console.log(solves)
-*/
-let sudoku = []
-let arr = generateSudoku()
-for (let i = 0; i < arr.length; i++) {
-    sudoku = sudoku.concat(arr[i])
+        console.log(JSON.parse(JSON.stringify(arr)))
+
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
+
+        console.log(JSON.parse(JSON.stringify(arr)))
+
+    } while (sudokuSolver(JSON.parse(JSON.stringify(arr))).length > 1)
+
+    let sudoku = []
+
+    for (let i = 0; i < arr.length; i++) {
+        sudoku = sudoku.concat(arr[i])
+    }
+
+    return sudoku
 }
 
+console.time("1")
+let sudoku = generateSudokuPuzzle()
+
 cells.forEach(function (item, i) {
-    item.textContent = sudoku[i]
-}) 
+    if (sudoku[i]) {
+        item.textContent = sudoku[i]
+    }
+})
+console.timeEnd("1")
+
+
+function keyListener(event) {
+    event = event || window.event;
+
+    if (event.key === 1) {
+        btnNums[0].click()
+    }
+}
+
+document.onkeydown = function (e) {
+    e = e || window.event;
+    var key = e.which || e.keyCode;
+
+    switch (key) {
+        case 49:
+            btnNums[0].click()
+            break
+        case 50:
+            btnNums[1].click()
+            break
+        case 51:
+            btnNums[2].click()
+            break
+        case 52:
+            btnNums[3].click()
+            break
+        case 53:
+            btnNums[4].click()
+            break
+        case 54:
+            btnNums[5].click()
+            break
+        case 55:
+            btnNums[6].click()
+            break
+        case 56:
+            btnNums[7].click()
+            break
+        case 57:
+            btnNums[8].click()
+            break
+    }
+}

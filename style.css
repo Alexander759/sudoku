@@ -40,3 +40,11 @@ td {
     font-size: 20px;
     margin: 10px;
 }
+
+.bold-down {
+    border-bottom: 3px solid black;
+}
+
+.bold-right {
+    border-right: 3px solid black;
+}
