@@ -1,12 +1,35 @@
-﻿body
-{
+﻿:root {
+    --pixelsOfBorder: 2px;
+}
 
+html {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+footer {
+    height: 80px;
+    margin: 0px;
+    margin-bottom: 30px;
+    padding: 0px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 table {
-    width: 36vw;
-    height: 36vw;
-
+    width: 60%;
+    height: 100%;
+    margin: 0px;
+    cursor: pointer;
+    justify-self: center;
+    grid-area: t;
 }
 
 td {
@@ -21,30 +44,161 @@ td {
 }
 
 .grid-container {
+    margin-top: 20px;
     display: grid;
-    grid-template-columns: auto auto
+    grid-template-columns: auto auto;
+    grid-template-rows: 50% 50%;
+    grid-gap: 10px;
+    grid-template-areas:
+        "t a"
+        "t b";
 }
 
 .marked-cell {
-    background: rgba(43, 83, 183, 0.38);
+    background: #68d0fc;
 }
 
 .column-and-row-marked-cell {
-    background: rgba(14, 193, 255, 0.44);
+    background: #befff6;
+}
+
+.btn-nums-container {
+    display: grid;
+    grid-template-columns: 33.333333% 33.333333% 33.333333%;
+    grid-template-columns: 33.333333% 33.333333% 33.333333%;
+    grid-gap: 0px;
+    width: 50%;
+    height: 100%;
+    align-self: end;
+    grid-area: b;
 }
 
 .btn-nums {
-    background: white;
+    background: #befff6;
     color: black;
     display: flex;
-    font-size: 20px;
-    margin: 10px;
+    cursor: pointer;
+    font-size: 4vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    transition: ease 0.4s;
+}
+
+.btn-nums:hover {
+    color: white;
+    background: #75d6ff;
+}
+
+.new-game {
+    grid-area: a;
+    align-self: center;
+}
+
+.label-text {
+    font-family:'Mukta', sans-serif;
+    font-size: 25px;
+}
+
+.bold-right {
+    border-right: 3px solid black
 }
 
 .bold-down {
     border-bottom: 3px solid black;
 }
 
-.bold-right {
-    border-right: 3px solid black;
+#title {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 50px;
+    color: white;
+}
+
+#btn1 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+}
+
+#btn2 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+}
+
+#btn3 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+    border-right: var(--pixelsOfBorder) solid black;
+}
+
+#btn4 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+}
+
+#btn5 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+}
+
+#btn6 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+    border-right: var(--pixelsOfBorder) solid black;
+}
+
+#btn7 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+    border-bottom: var(--pixelsOfBorder) solid black;
+}
+
+#btn8 {
+    border-top: var(--pixelsOfBorder) solid black;
+    border-left: var(--pixelsOfBorder) solid black;
+    border-bottom: var(--pixelsOfBorder) solid black;
+}
+
+#btn9 {
+    border: var(--pixelsOfBorder) solid black;
+}
+
+#btn-new-game {
+    cursor: pointer;
+    font-family: 'Mukta', sans-serif;
+    border: 3px solid black;
+    background: none;
+    font-size: 30px;
+    width: 80%;
+    border-radius: 20px;
+    transition: ease 0.4s;
+}
+
+#btn-new-game:hover {
+    background: #75d6ff;
+    color: white;
+}
+
+    @media only screen and (max-width: 800px) {
+        .grid-container {
+        justify-items: center;
+        grid-template-areas:
+            "t t"
+            "t t"
+            "b b"
+            "b b"
+            "a a"
+            "a a";
+    }
+
+
+    .btn-nums-container {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto;
+        grid-template-rows: auto;
+        width: 60%;
+        height: 100%;
+        align-self: center;
+        grid-area: b;
+    }
+
 }

@@ -1,7 +1,36 @@
 const cells = document.querySelectorAll("td")
 const btnNums = document.querySelectorAll(".btn-nums")
+const btnNewGame = document.getElementById("btn-new-game")
 
 let lastMarkedCell = null
+let solution = []
+
+btnNewGame.addEventListener("click", function (e) {
+    e.preventDefault()
+
+    cells.forEach(function (item) {
+        item.textContent = ""
+    })
+
+    const radioBtns = document.getElementsByName("difficulty")
+
+    let difficulty = 0
+
+    for (let i = 0; i < radioBtns.length; i++) {
+        if (radioBtns[i].checked) {
+            difficulty = i + 1
+        }
+    }
+
+    let sudoku = generateSudokuPuzzle(difficulty)
+
+    cells.forEach(function (item, i) {
+        if (sudoku[i]) {
+            item.textContent = sudoku[i]
+        }
+    })
+
+})
 
 cells.forEach(function(cell, i) {
     cell.addEventListener("click", function () {
@@ -51,83 +80,25 @@ btnNums.forEach(function (btn) {
     btn.addEventListener("click", function () {
         if (lastMarkedCell !== null) {
             lastMarkedCell.textContent = btn.textContent
+
+            let index = null
+
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i] === lastMarkedCell) {
+                    index = i
+                    break
+                }
+            }
+
+            if (lastMarkedCell.textContent === solution[index].toString()) {
+                lastMarkedCell.style.color = "#022bfa"
+            } else {
+                lastMarkedCell.style.color = "#ff160a"
+            }
+
         }
     })
 })
-
-/*function generateSudoku() {
-    let sudoku = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
-
-    for (let i = 0; i < sudoku.length; i++) {
-
-        let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-        for (let j = 0; j < sudoku[i].length; j++) {
-
-            let numsUsed = []
-
-            for (let k = 0; k < i; k++) {
-                if (nums.indexOf(sudoku[k][j]) !== -1) {
-                    numsUsed.push(nums.splice(nums.indexOf(sudoku[k][j]), 1)[0])
-                }
-            }
-
-            let startIndexOfSquareRow = 0
-            let startIndexOfSquareColumn = 0
-
-            if (i < 3) {
-                startIndexOfSquareRow = 0
-            } else if (i < 6) {
-                startIndexOfSquareRow = 3
-            } else {
-                startIndexOfSquareRow = 6
-            }
-
-            if (j < 3) {
-                startIndexOfSquareColumn = 0
-            } else if (j < 6) {
-                startIndexOfSquareColumn = 3
-            } else {
-                startIndexOfSquareColumn = 6
-            }
-
-            for (let row = startIndexOfSquareRow; row < startIndexOfSquareRow + 3; row++) {
-                for (let col = startIndexOfSquareColumn; col < startIndexOfSquareColumn + 3; col++) {
-                    if (nums.indexOf(sudoku[row][col]) !== -1) {
-                        numsUsed.push(nums.splice(nums.indexOf(sudoku[row][col]), 1)[0])
-                    }
-                }
-            }
-
-            if (nums.length !== 0) {
-                let randomIndex = Math.floor(Math.random() * nums.length)
-                sudoku[i][j] = nums[randomIndex]
-                nums.splice(randomIndex, 1)
-            }
-            else {
-                //console.log("wkwkwk" + " " + i + " " + j)
-                return generateSudoku();
-            }
-
-            for (let k = 0; k < numsUsed.length; k++) {
-                nums.push(numsUsed[k])
-            }
-            
-        }
-    }
-
-    return sudoku
-}*/
 
 function sudokuSolver(sudoku, maxLength = 1000) {
     let solves = []
@@ -229,7 +200,44 @@ function findNumsThatCantBeUsed(sudoku, indexOne, indexTwo) {
     return nums
 }
 
-function generateSudokuPuzzle() {
+function removeNums(sudoku, difficulty) {
+    let randomIndexes = []
+    let randomNum = null
+
+    if (difficulty === 1) {
+        randomNum = Math.floor(Math.random() * 5) + 16
+    } else if (difficulty === 2) {
+        randomNum = Math.floor(Math.random() * 5) + 26
+    } else { //difficulty = 3
+        randomNum = Math.floor(Math.random() * 5) + 36
+    }
+
+    for (let i = 0; i <= randomNum; i++) {
+        let randomIndex = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
+
+        while (randomIndexes.includes(randomIndex.toString())) {
+            randomIndex = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
+        }
+
+        randomIndexes.push(randomIndex.toString())
+        sudoku[randomIndex[0]][randomIndex[1]] = 0
+
+    }
+
+    return sudoku
+
+}
+
+function saveSolution(sudoku) {
+    solution = []
+
+    for (let i = 0; i < sudoku.length; i++) {
+        solution = solution.concat(sudoku[i])
+    }
+    console.log(solution)
+}
+
+function generateSudokuPuzzle(difficulty) {
     let arr = null
     do {
         let emptySudoku = [
@@ -245,69 +253,8 @@ function generateSudokuPuzzle() {
         ]
 
         arr = sudokuSolver(emptySudoku, 1000)[Math.floor(Math.random() * 1000)]
-
-        console.log(JSON.parse(JSON.stringify(arr)))
-
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-        arr[Math.floor(Math.random() * 9)][Math.floor(Math.random() * 9)] = 0
-
-        console.log(JSON.parse(JSON.stringify(arr)))
+        saveSolution(arr.slice())
+        arr = removeNums(arr.slice(), difficulty)
 
     } while (sudokuSolver(JSON.parse(JSON.stringify(arr))).length > 1)
 
@@ -320,23 +267,15 @@ function generateSudokuPuzzle() {
     return sudoku
 }
 
-console.time("1")
-let sudoku = generateSudokuPuzzle()
+function generateAndPastePuzzleSudoku(difficulty) {
 
-cells.forEach(function (item, i) {
-    if (sudoku[i]) {
-        item.textContent = sudoku[i]
-    }
-})
-console.timeEnd("1")
+    const sudoku = generateSudokuPuzzle(difficulty)
 
-
-function keyListener(event) {
-    event = event || window.event;
-
-    if (event.key === 1) {
-        btnNums[0].click()
-    }
+    cells.forEach(function (item, i) {
+        if (sudoku[i]) {
+            item.textContent = sudoku[i]
+        }
+    })
 }
 
 document.onkeydown = function (e) {
@@ -344,6 +283,50 @@ document.onkeydown = function (e) {
     var key = e.which || e.keyCode;
 
     switch (key) {
+        case 37:
+            if (lastMarkedCell) {
+                for (let i = 0; i < cells.length; i++) {
+                    if (cells[i] === lastMarkedCell && 0 < i) {
+                        let index = i - 1
+                        cells[index].click()
+                        break
+                    }
+                }
+            }
+            break
+        case 38:
+            if (lastMarkedCell) {
+                for (let i = 0; i < cells.length; i++) {
+                    if (cells[i] === lastMarkedCell && 8 < i) {
+                        let index = i - 9
+                        cells[index].click()
+                        break
+                    }
+                }
+            }
+            break
+        case 39:
+            if (lastMarkedCell) {
+                for (let i = 0; i < cells.length; i++) {
+                    if (cells[i] === lastMarkedCell && i < 80) {
+                        let index = i + 1
+                        cells[index].click()
+                        break
+                    }
+                }
+            }
+            break
+        case 40:
+            if (lastMarkedCell) {
+                for (let i = 0; i < cells.length; i++) {
+                    if (cells[i] === lastMarkedCell && i < 72) {
+                        let index = i + 9
+                        cells[index].click()
+                        break
+                    }
+                }
+            }
+            break
         case 49:
             btnNums[0].click()
             break
@@ -373,3 +356,5 @@ document.onkeydown = function (e) {
             break
     }
 }
+
+generateAndPastePuzzleSudoku(1)

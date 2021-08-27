@@ -2,11 +2,17 @@
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap&family=Mukta:wght@300" rel="stylesheet">
     <meta charset="utf-8" />
     <title>Судоку</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    
+    <footer>
+        <h1 id="title">Судоку</h1>
+    </footer>
+
     <div class="grid-container">
         <table cellspacing="0">
             <tr>
@@ -110,16 +116,35 @@
             </tr>
         </table>
 
-        <div class="btn-nims-container">
-            <button class="btn-nums">1</button>
-            <button class="btn-nums">2</button>
-            <button class="btn-nums">3</button>
-            <button class="btn-nums">4</button>
-            <button class="btn-nums">5</button>
-            <button class="btn-nums">6</button>
-            <button class="btn-nums">7</button>
-            <button class="btn-nums">8</button>
-            <button class="btn-nums">9</button>
+        <form class="new-game">
+            <div>
+                <input type="radio" name="difficulty" checked/>
+                <label class="label-text">Лесно</label>
+            </div>
+            <div>
+                <input type="radio" name="difficulty" />
+                <label class="label-text">Средно</label>
+            </div>
+            <div>
+                <input type="radio" name="difficulty" />
+                <label class="label-text">Трудно</label>
+            </div>
+            <br />
+            <button id="btn-new-game" type="submit">
+                Нова игра
+            </button>
+        </form>
+
+        <div class="btn-nums-container">
+            <button class="btn-nums" id="btn1">1</button>
+            <button class="btn-nums" id="btn2">2</button>
+            <button class="btn-nums" id="btn3">3</button>
+            <button class="btn-nums" id="btn4">4</button>
+            <button class="btn-nums" id="btn5">5</button>
+            <button class="btn-nums" id="btn6">6</button>
+            <button class="btn-nums" id="btn7">7</button>
+            <button class="btn-nums" id="btn8">8</button>
+            <button class="btn-nums" id="btn9">9</button>
         </div>
     </div>
     <script src="script.js"></script>
