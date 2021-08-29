@@ -9,6 +9,7 @@ btnNewGame.addEventListener("click", function (e) {
     e.preventDefault()
 
     cells.forEach(function (item) {
+        item.style.color = "black"
         item.textContent = ""
     })
 
@@ -78,7 +79,7 @@ cells.forEach(function(cell, i) {
 
 btnNums.forEach(function (btn) {
     btn.addEventListener("click", function () {
-        if (lastMarkedCell !== null) {
+        if (lastMarkedCell !== null && (lastMarkedCell.textContent === "" || lastMarkedCell.style.color !== "black")) {
             lastMarkedCell.textContent = btn.textContent
 
             let index = null
@@ -208,9 +209,11 @@ function removeNums(sudoku, difficulty) {
         randomNum = Math.floor(Math.random() * 5) + 16
     } else if (difficulty === 2) {
         randomNum = Math.floor(Math.random() * 5) + 26
-    } else { //difficulty = 3
+    } else if (difficulty === 3) {
         randomNum = Math.floor(Math.random() * 5) + 36
-    }
+    } else { //difficulty === 4
+        randomNum = Math.floor(Math.random() * 5) + 46
+    } 
 
     for (let i = 0; i <= randomNum; i++) {
         let randomIndex = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
@@ -234,7 +237,7 @@ function saveSolution(sudoku) {
     for (let i = 0; i < sudoku.length; i++) {
         solution = solution.concat(sudoku[i])
     }
-    console.log(solution)
+    //console.log(solution)
 }
 
 function generateSudokuPuzzle(difficulty) {
@@ -252,7 +255,7 @@ function generateSudokuPuzzle(difficulty) {
             [0, 0, 0, 0, 0, 0, 0, 0, 0]
         ]
 
-        arr = sudokuSolver(emptySudoku, 1000)[Math.floor(Math.random() * 1000)]
+        arr = sudokuSolver(emptySudoku, 1)[Math.floor(Math.random() * 1)]
         saveSolution(arr.slice())
         arr = removeNums(arr.slice(), difficulty)
 

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    
+
     <footer>
         <h1 id="title">Судоку</h1>
     </footer>
@@ -117,19 +117,25 @@
         </table>
 
         <form class="new-game">
-            <div>
-                <input type="radio" name="difficulty" checked/>
-                <label class="label-text">Лесно</label>
+            <div class="radio-btns">
+                <div>
+                    <input type="radio" name="difficulty" checked />
+                    <label class="label-text">Лесно</label>
+                </div>
+                <div>
+                    <input type="radio" name="difficulty" />
+                    <label class="label-text">Средно</label>
+                </div>
+                <div>
+                    <input type="radio" name="difficulty" />
+                    <label class="label-text">Трудно</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="difficulty" />
+                    <label class="label-text">Много трудно</label>
+                </div>
             </div>
-            <div>
-                <input type="radio" name="difficulty" />
-                <label class="label-text">Средно</label>
-            </div>
-            <div>
-                <input type="radio" name="difficulty" />
-                <label class="label-text">Трудно</label>
-            </div>
-            <br />
             <button id="btn-new-game" type="submit">
                 Нова игра
             </button>

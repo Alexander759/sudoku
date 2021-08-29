@@ -24,8 +24,8 @@ footer {
 }
 
 table {
-    width: 60%;
-    height: 100%;
+    width: 35vw;
+    height: 35vw;
     margin: 0px;
     cursor: pointer;
     justify-self: center;
@@ -46,8 +46,8 @@ td {
 .grid-container {
     margin-top: 20px;
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: 50% 50%;
+    grid-template-columns: 70vw auto;
+    grid-template-rows: auto auto;
     grid-gap: 10px;
     grid-template-areas:
         "t a"
@@ -180,6 +180,12 @@ td {
 }
 
 @media only screen and (max-device-width: 800px) {
+
+    table {
+        width: 60vw;
+        height: 60vw;
+    }
+
     .grid-container {
         justify-items: center;
         grid-gap: 40px;
@@ -201,6 +207,11 @@ td {
         align-self: center;
         grid-area: b;
     }
+
+    .radio-btns {
+        display: flex;
+    }
+
 
     #btn-new-game {
         width: 100%;
