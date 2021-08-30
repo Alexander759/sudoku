@@ -10,6 +10,8 @@ btnNewGame.addEventListener("click", function (e) {
 
     cells.forEach(function (item) {
         item.style.color = "black"
+        item.style.background = "none"
+        lastMarkedCell = null
         item.textContent = ""
     })
 
@@ -35,9 +37,19 @@ btnNewGame.addEventListener("click", function (e) {
 
 cells.forEach(function(cell, i) {
     cell.addEventListener("click", function () {
-
+        lastMarkedCell = cell
         cells.forEach(function (item) {
-            item.classList.remove("column-and-row-marked-cell")
+            if (item.textContent === lastMarkedCell.textContent && item.textContent !== "") {
+                item.style.background = "#03fcf8"
+            }
+            else {
+                item.style.background = "none"
+            }
+
+
+            if (item.style.background !== "rgb(3, 252, 248)") {
+                item.style.background = "none"
+            }
         })
 
         if (lastMarkedCell !== null) {
@@ -58,21 +70,18 @@ cells.forEach(function(cell, i) {
         //const indexOfStartRow;
 
         for (let j = indexOfStartColumn; j < 81; j += 9) {
-            if (cells[j] !== cell) {
-                cells[j].classList.add("column-and-row-marked-cell")
+            if (cells[j].style.background !== "rgb(3, 252, 248)") {
+                cells[j].style.background = "#befff6"
             }
         }
 
         for (let j = indexOfStartRow; j < indexOfStartRow + 9; j++) {
-            if (cells[j] !== cell) {
-                cells[j].classList.add("column-and-row-marked-cell")
+            if (cells[j].style.background !== "rgb(3, 252, 248)") {
+                cells[j].style.background = "#befff6"
             }
         }
 
-
-
-
-        cell.classList.add("marked-cell")
+        cell.style.background = "#68d0fc"
         lastMarkedCell = cell
     })
 })
@@ -96,6 +105,9 @@ btnNums.forEach(function (btn) {
             } else {
                 lastMarkedCell.style.color = "#ff160a"
             }
+
+            lastMarkedCell.click()
+            
 
         }
     })
@@ -237,7 +249,6 @@ function saveSolution(sudoku) {
     for (let i = 0; i < sudoku.length; i++) {
         solution = solution.concat(sudoku[i])
     }
-    //console.log(solution)
 }
 
 function generateSudokuPuzzle(difficulty) {

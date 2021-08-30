@@ -54,14 +54,6 @@ td {
         "t b";
 }
 
-.marked-cell {
-    background: #68d0fc;
-}
-
-.column-and-row-marked-cell {
-    background: #befff6;
-}
-
 .btn-nums-container {
     display: grid;
     grid-template-columns: 33.333333% 33.333333% 33.333333%;
@@ -101,6 +93,10 @@ td {
     font-size: 25px;
 }
 
+.bold-top {
+    border-top: 3px solid black
+}
+
 .bold-right {
     border-right: 3px solid black
 }
@@ -109,6 +105,9 @@ td {
     border-bottom: 3px solid black;
 }
 
+.bold-left {
+    border-left: 3px solid black;
+}
 #title {
     font-family: 'Roboto Mono', monospace;
     font-size: 50px;
